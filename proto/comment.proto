@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package product;
+
+service CommentController {
+  rpc AddComment(Comment) returns (Comment) {}
+}
+
+
+message Comment {
+  string text = 1;
+  string user = 2;
+}

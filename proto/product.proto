@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package product;
+
+service ProductController {
+  rpc AddProduct(Product) returns (Product) {}
+  rpc FindProduct(ProductById) returns (Product) {}
+  rpc AddComment(Comment) returns (Comment) {}
+}
+
+message ProductById {
+  int32 id = 1;
+}
+
+message Product {
+  string name = 1;
+}
+
+
+message Comment {
+  string text = 1;
+  string user = 2;
+  string productName = 3;
+}

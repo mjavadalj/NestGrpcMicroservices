@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package product;
+
+service ProductController {
+  rpc AddProduct(Product) returns (Product) {}
+}
+
+message ProductById {
+  int32 id = 1;
+}
+
+message Product {
+  int32 id = 1;
+  string name = 2;
+}
