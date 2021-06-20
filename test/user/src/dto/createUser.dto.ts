@@ -16,5 +16,5 @@ export class CreateUserDto {
 
   password: string;
 
-  comments: string[];
+  // comments: string[];
 }

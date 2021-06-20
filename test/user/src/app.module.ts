@@ -9,8 +9,8 @@ import { UserModule } from './user.module';
 
 @Module({
   imports: [
-    // TypeOrmModule.forRoot(typeOrmConfig),
-    MongooseModule.forRoot('mongodb://localhost/ecomnestmicro'),
+    TypeOrmModule.forRoot(typeOrmConfig),
+    // MongooseModule.forRoot('mongodb://localhost/ecomnestmicro'),
     UserModule,
     // ClientsModule.register([
     //   {
