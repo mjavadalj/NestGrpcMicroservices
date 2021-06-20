@@ -36,6 +36,7 @@ export class User extends BaseEntity {
     enum: UserType,
     default: UserType.NORMAL,
   })
+  // @ApiProperty({ example: "vip", description: 'The type of the user' }) //TODO: the entity must be in entity folder i think
   type: UserType;
 
   @Column()

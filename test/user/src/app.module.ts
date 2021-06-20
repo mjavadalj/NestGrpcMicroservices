@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { credentials } from 'grpc';
 import { join } from 'path';
@@ -8,7 +9,8 @@ import { UserModule } from './user.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(typeOrmConfig),
+    // TypeOrmModule.forRoot(typeOrmConfig),
+    MongooseModule.forRoot('mongodb://localhost/ecomnestmicro'),
     UserModule,
     // ClientsModule.register([
     //   {

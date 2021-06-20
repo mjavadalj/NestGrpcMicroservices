@@ -21,13 +21,20 @@ import { CreateUserDto } from './dto/createUser.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
+import {
+  ApiOperation,
+  ApiTags,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 // import {
 //   productMicroserviceOptions,
 //   commentMicroserviceOptions,
 // } from './grpc.options';
 import { IGrpcService } from './grpc.interface';
 import { Observable } from 'rxjs';
-
+// @ApiBearerAuth()
+@ApiTags('users')
 @Controller('/user')
 export class UserController implements OnModuleInit {
   private grpcService: IGrpcService;
@@ -112,6 +119,12 @@ export class UserController implements OnModuleInit {
 
   @Post('/addUser')
   @UsePipes(ValidationPipe)
+  @ApiOperation({ summary: 'Add user' })
+  @ApiResponse({
+    status: 200,
+    description: 'The found record',
+    type: User,
+  })
   async addUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.addUser(createUserDto);
   }
