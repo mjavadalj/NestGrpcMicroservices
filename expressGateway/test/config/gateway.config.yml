@@ -1,0 +1,76 @@
+http:
+    port: 8080
+admin:
+    port: 9876
+    host: localhost
+apiEndpoints:
+    api:
+        host: localhost
+        paths:
+            - "/comment/*"
+    product:
+        host: localhost
+        paths:
+            - "/product/*"
+    user:
+        host: localhost
+        paths:
+            - "/user/*"
+serviceEndpoints:
+    httpbin:
+        url: "http://localhost:1008/comment/test"
+    product:
+        url: "http://localhost:1007/"
+    user:
+        url: "http://localhost:3000/"
+policies:
+    - basic-auth
+    - key-auth
+    - oauth2
+    - cors
+    - expression
+    - log
+    - proxy
+    - rate-limit
+    - jwt
+    - request-transformer
+pipelines:
+    product:
+        apiEndpoints:
+            - product
+        policies:
+            # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+            # - key-auth:
+            - jwt:
+                  action:
+                      secretOrPublicKey: "testSecret123"
+                      checkCredentialExistence: false
+            - request-transformer:
+                  action:
+                      body:
+                          add:
+                              user: req.user
+            - proxy:
+                  - action:
+                        serviceEndpoint: product
+                        changeOrigin: true
+    httpbin:
+        apiEndpoints:
+            - api
+        policies:
+            # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+            # - key-auth:
+            - proxy:
+                  - action:
+                        serviceEndpoint: httpbin
+                        changeOrigin: true
+    user:
+        apiEndpoints:
+            - user
+        policies:
+            # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+            # - key-auth:
+            - proxy:
+                  - action:
+                        serviceEndpoint: user
+                        changeOrigin: true
