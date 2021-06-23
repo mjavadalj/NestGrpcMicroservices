@@ -6,12 +6,18 @@ service ProductController {
   rpc AddProduct(Product) returns (Product) {}
   rpc FindProduct(ProductById) returns (Product) {}
   rpc AddComment(Comment) returns (Comment) {}
+  rpc UserAuth(Test) returns (Test) {}
 }
 
 message ProductById {
   int32 id = 1;
 }
+message Empty {
 
+}
+message Test {
+  string name = 1;
+}
 message Product {
   string name = 1;
 }

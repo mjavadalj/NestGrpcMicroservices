@@ -12,8 +12,8 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       package: 'product',
-      protoPath: join(__dirname, '../../../proto/product.proto'),
-       url: 'localhost:5001',
+      protoPath: join(__dirname, '../../proto/product.proto'),
+      url: 'localhost:5001',
     },
   });
 

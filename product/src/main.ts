@@ -80,7 +80,7 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       package: 'product',
-      protoPath: join(__dirname, '../../../proto/product.proto'),
+      protoPath: join(__dirname, '../../proto/product.proto'),
     },
   });
 

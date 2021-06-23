@@ -4,6 +4,8 @@ import { Test } from '@nestjs/testing';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
+
+//TODO: must mock  evthng else but service!
 enum UserType {
   NORMAL = 'normal',
   VIP = 'vip',

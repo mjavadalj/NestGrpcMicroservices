@@ -17,8 +17,8 @@ apiEndpoints:
         paths:
             - "/user/*"
 serviceEndpoints:
-    httpbin:
-        url: "http://localhost:1008/comment/test"
+    comment:
+        url: "http://localhost:1008/"
     product:
         url: "http://localhost:1007/"
     user:
@@ -45,24 +45,28 @@ pipelines:
                   action:
                       secretOrPublicKey: "testSecret123"
                       checkCredentialExistence: false
-            - request-transformer:
-                  action:
-                      body:
-                          add:
-                              user: req.user
+            # - request-transformer:
+            #       action:
+            #           headers:
+            #               add:
+            #                   user: req.user
             - proxy:
                   - action:
                         serviceEndpoint: product
                         changeOrigin: true
-    httpbin:
+    comment:
         apiEndpoints:
             - api
         policies:
             # Uncomment `key-auth:` when instructed to in the Getting Started guide.
             # - key-auth:
+            # - jwt:
+            #       action:
+            #           secretOrPublicKey: "testSecret123"
+            #           checkCredentialExistence: false
             - proxy:
                   - action:
-                        serviceEndpoint: httpbin
+                        serviceEndpoint: comment
                         changeOrigin: true
     user:
         apiEndpoints:
