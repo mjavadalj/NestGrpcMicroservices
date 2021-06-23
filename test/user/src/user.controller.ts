@@ -33,6 +33,7 @@ import {
 // } from './grpc.options';
 import { IGrpcService } from './grpc.interface';
 import { Observable } from 'rxjs';
+import { Metadata, ServerUnaryCall } from 'grpc';
 // @ApiBearerAuth()
 @ApiTags('users')
 @Controller('/user')
@@ -133,6 +134,25 @@ export class UserController implements OnModuleInit {
   @UsePipes(ValidationPipe)
   async login(@Body() authCredential: AuthCredential) {
     return this.userService.login(authCredential);
+  }
+
+  @GrpcMethod('ProductController', 'UserAuth')
+  // @UseGuards(AuthGuard())
+  async userAuth(name, metadata: Metadata, call: ServerUnaryCall<any>) {
+    try {
+      // console.log('00=== ', { name });
+      // console.log('11=== ', { ok: name.name });
+      return this.userService.userAuth(name.name);
+    } catch (error) {
+      console.log('effff : ', { error });
+    }
+    // try {
+    //   console.log('request: ', name);
+    //   // console.log('request: ', metadata);
+    //   return name;
+    // } catch (error) {
+    //   console.log('lsdf093:===  ', { error });
+    // }
   }
 
   // @Post('/addProduct')

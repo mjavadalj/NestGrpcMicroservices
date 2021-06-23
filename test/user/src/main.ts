@@ -7,17 +7,17 @@ import { microserviceOptions } from './grpc.options';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  // const app = await NestFactory.create(AppModule);
 
-  const config = new DocumentBuilder()
-    .setTitle('Users')
-    .setDescription('The users API description')
-    .setVersion('1.0')
-    .addTag('users')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
-  await app.listen(3000);
+  // const config = new DocumentBuilder()
+  //   .setTitle('Users')
+  //   .setDescription('The users API description')
+  //   .setVersion('1.0')
+  //   .addTag('users')
+  //   .build();
+  // const document = SwaggerModule.createDocument(app, config);
+  // SwaggerModule.setup('api', app, document);
+  // await app.listen(3000);
 
   // const app = await NestFactory.createMicroservice<MicroserviceOptions>(
   //   AppModule,
@@ -58,12 +58,21 @@ async function bootstrap() {
   // await app.listen(3000);
   // console.log(`Application is running on: ${await app.getUrl()}`);
 
-  // const app = await NestFactory.create(AppModule);
-  // app.connectMicroservice<MicroserviceOptions>(microserviceOptions);
+  const app = await NestFactory.create(AppModule);
+  app.connectMicroservice<MicroserviceOptions>(microserviceOptions);
 
-  // await app.startAllMicroservicesAsync();
-  // await app.listen(3000);
-  // console.log(`Application is running on: ${await app.getUrl()}`);
+  const config = new DocumentBuilder()
+    .setTitle('Users')
+    .setDescription('The users API description')
+    .setVersion('1.0')
+    .addTag('users')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
+  await app.startAllMicroservicesAsync();
+  await app.listen(3000);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 
   // const app = await NestFactory.createMicroservice<MicroserviceOptions>(
   //   AppModule,

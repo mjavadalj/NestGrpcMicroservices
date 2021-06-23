@@ -24,4 +24,24 @@ export class UserService {
     const accessToken = await this.jwtService.sign(payload);
     return accessToken;
   }
+  async userAuth(data) {
+    // try {
+    var result;
+    var temp = await this.jwtService.verifyAsync(data);
+    // .then((resdata) => {
+    //   console.log({ name: resdata.username });
+    //   // var result = {
+    //   //   name: data.username,
+    //   // };
+    //   result = { name: resdata.username };
+    // })
+    // .catch((err) => {
+    //   console.log('errrr: ', { err });
+    // });
+    console.log('-----)', { name: temp.username });
+    return { name: temp.username };
+    // } catch (error) {
+    //   console.log('errrr ', { error });
+    // }
+  }
 }
