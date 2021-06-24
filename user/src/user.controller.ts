@@ -26,6 +26,7 @@ import {
   ApiTags,
   ApiResponse,
   ApiBearerAuth,
+  ApiBody,
 } from '@nestjs/swagger';
 // import {
 //   productMicroserviceOptions,
@@ -34,7 +35,9 @@ import {
 import { IGrpcService } from './grpc.interface';
 import { Observable } from 'rxjs';
 import { Metadata, ServerUnaryCall } from 'grpc';
+import { CreateProductDto } from './dto/createProduct.dto';
 // @ApiBearerAuth()
+
 @ApiTags('users')
 @Controller('/user')
 export class UserController implements OnModuleInit {
@@ -59,34 +62,19 @@ export class UserController implements OnModuleInit {
       this.clientComm.getService<IGrpcService>('ProductController');
   }
 
-  @Post('/addcomment')
-  @UseGuards(AuthGuard())
-  async addComment(
-    @Req() req,
-    @Body('productId') id: number,
-    @Body('text') text: string,
-  ) {
-    //: User TODO:
-    try {
-      const user = req.user;
-      console.log('user from passport: ', { user });
-
-      // return this.grpcService.findProduct({ id });
-      const product = await this.grpcService.findProduct({ id }).toPromise();
-      console.log('product: ', { product: product.name });
-      const comment = await this.grpcCommService.addComment({
-        text,
-        user: user._id,
-      });
-      console.log('comment:=> ', { comment });
-      return comment;
-    } catch (error) {
-      console.log('errrrr: ', { error });
-    }
-  }
-
   @Post('/addProduct')
   @UseGuards(AuthGuard())
+  @ApiOperation({ summary: 'Add product' })
+  @ApiBody({ type: CreateProductDto })
+  @ApiResponse({
+    status: 201,
+    description: 'The founproduct added',
+    type: User,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'auth failed',
+  })
   addProduct(
     @Body('id') id: number,
     @Body('name') name: string,
@@ -121,10 +109,15 @@ export class UserController implements OnModuleInit {
   @Post('/addUser')
   @UsePipes(ValidationPipe)
   @ApiOperation({ summary: 'Add user' })
+  @ApiBody({ type: CreateUserDto })
   @ApiResponse({
-    status: 200,
+    status: 201,
     description: 'The found record',
     type: User,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'The found failed',
   })
   async addUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.addUser(createUserDto);
@@ -132,6 +125,17 @@ export class UserController implements OnModuleInit {
 
   @Post('/login')
   @UsePipes(ValidationPipe)
+  @ApiOperation({ summary: 'user login' })
+  @ApiBody({ type: AuthCredential })
+  @ApiResponse({
+    status: 200,
+    description: 'login succes',
+    type: User,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'login failed',
+  })
   async login(@Body() authCredential: AuthCredential) {
     return this.userService.login(authCredential);
   }
@@ -146,6 +150,7 @@ export class UserController implements OnModuleInit {
     } catch (error) {
       console.log('effff : ', { error });
     }
+
     // try {
     //   console.log('request: ', name);
     //   // console.log('request: ', metadata);
@@ -153,6 +158,32 @@ export class UserController implements OnModuleInit {
     // } catch (error) {
     //   console.log('lsdf093:===  ', { error });
     // }
+  }
+
+  @Post('/addcomment')
+  @UseGuards(AuthGuard())
+  async addComment(
+    @Req() req,
+    @Body('productId') id: number,
+    @Body('text') text: string,
+  ) {
+    //: User TODO:
+    try {
+      const user = req.user;
+      console.log('user from passport: ', { user });
+
+      // return this.grpcService.findProduct({ id });
+      const product = await this.grpcService.findProduct({ id }).toPromise();
+      console.log('product: ', { product: product.name });
+      const comment = await this.grpcCommService.addComment({
+        text,
+        user: user._id,
+      });
+      console.log('comment:=> ', { comment });
+      return comment;
+    } catch (error) {
+      console.log('errrrr: ', { error });
+    }
   }
 
   // @Post('/addProduct')

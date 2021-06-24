@@ -9,6 +9,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { ApiProperty } from '@nestjs/swagger';
 enum UserType {
   NORMAL = 'normal',
   VIP = 'vip',
@@ -18,19 +19,28 @@ export class User extends BaseEntity {
   @ObjectIdColumn()
   _id: ObjectID;
 
+  @ApiProperty()
   @Column({ nullable: true })
   firstName: string;
 
+  @ApiProperty()
   @Column({ nullable: true })
   lastName: string;
 
+  @ApiProperty()
   @Column()
   password: string;
 
+  @ApiProperty()
   @Column()
   @Index({ unique: true }) //TODO: check the dup keys other place
   username: string;
 
+  @ApiProperty({
+    description: 'The type of user',
+    default: 'normal',
+    enum: ['normal', 'vip'],
+  })
   @Column({
     type: 'enum',
     enum: UserType,
